@@ -553,7 +553,7 @@ window.toggleHelpful = function (btn, originalLikes) {
 
 /**
  * --------------------------------
- * Dynamic Adaptive Ad Banners (Syncs banner with ad size changes)
+ * Dynamic Adaptive Ad Banners (Syncs banner with ad size changes without breaking ad scripts)
  * --------------------------------
  */
 function initAdaptiveAdBanners() {
@@ -564,65 +564,56 @@ function initAdaptiveAdBanners() {
         const adContainer = section.querySelector('[id^="container-"]');
         if (!adContainer) return;
 
-        const syncSize = () => {
-            const elements = adContainer.querySelectorAll('iframe, img, div, a, embed, object');
-            let detectedWidth = 0;
-            let detectedHeight = 0;
+        // Check if the ad container actually has loaded content and adapt banner smoothly
+        const updateAdLayout = () => {
+            const iframe = adContainer.querySelector('iframe');
+            const img = adContainer.querySelector('img');
+            const adEl = iframe || img || (adContainer.children.length > 0 ? adContainer.firstElementChild : null);
 
-            elements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const attrW = parseInt(el.getAttribute('width')) || parseInt(el.style.width) || 0;
-                const attrH = parseInt(el.getAttribute('height')) || parseInt(el.style.height) || 0;
-                const renderedW = Math.round(rect.width) || el.offsetWidth || 0;
-                const renderedH = Math.round(rect.height) || el.offsetHeight || 0;
+            if (adEl) {
+                const rect = adEl.getBoundingClientRect();
+                const detectedW = Math.round(rect.width) || parseInt(adEl.getAttribute('width')) || adEl.offsetWidth || 0;
 
-                const finalW = Math.max(attrW, renderedW);
-                const finalH = Math.max(attrH, renderedH);
-
-                if (finalW > detectedWidth) detectedWidth = finalW;
-                if (finalH > detectedHeight) detectedHeight = finalH;
-            });
-
-            // If an ad is actively rendered with measurable dimensions
-            if (detectedWidth > 40 && detectedHeight > 20) {
-                const maxAvailable = window.innerWidth - (window.innerWidth < 600 ? 24 : 40);
-                const fittedW = Math.min(detectedWidth, maxAvailable);
-                section.style.width = 'fit-content';
-                section.style.maxWidth = `${Math.min(fittedW + 36, maxAvailable)}px`;
-                section.classList.add('ad-loaded');
+                if (detectedW > 40) {
+                    section.classList.remove('ad-hidden');
+                    const maxAvailable = window.innerWidth - (window.innerWidth < 600 ? 24 : 40);
+                    section.style.maxWidth = `${Math.min(detectedW + 36, maxAvailable)}px`;
+                }
             }
         };
 
-        // 1. ResizeObserver for real-time size updates when creative rotates or resizes
-        if (window.ResizeObserver) {
-            const ro = new ResizeObserver(() => {
-                requestAnimationFrame(syncSize);
-            });
-            ro.observe(adContainer);
-        }
-
-        // 2. MutationObserver for script injection of new iframes or banners
+        // 1. Observe when the ad script injects DOM elements
         if (window.MutationObserver) {
             const mo = new MutationObserver(() => {
-                syncSize();
-                adContainer.querySelectorAll('iframe').forEach(iframe => {
-                    iframe.addEventListener('load', syncSize, { once: true });
-                });
+                updateAdLayout();
+                const iframe = adContainer.querySelector('iframe');
+                if (iframe) {
+                    iframe.addEventListener('load', updateAdLayout, { once: true });
+                }
             });
-            mo.observe(adContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'width', 'height'] });
+            mo.observe(adContainer, { childList: true, subtree: true });
         }
 
-        // Staggered checks to catch ads loaded asynchronously by invoke.js
-        [400, 1000, 2000, 3500, 5000].forEach(delay => setTimeout(syncSize, delay));
+        // 2. Periodic checks to adapt smoothly after async loading
+        [300, 800, 1500, 3000].forEach(delay => setTimeout(updateAdLayout, delay));
+
+        // 3. Fallback: If no ad is loaded after 4.5 seconds (adblocked, empty, or removed), hide the empty frame
+        setTimeout(() => {
+            const hasVisibleAd = adContainer.querySelector('iframe, img, a') || 
+                                 (adContainer.children.length > 0 && adContainer.offsetHeight > 25);
+            if (!hasVisibleAd) {
+                section.classList.add('ad-hidden');
+            }
+        }, 4500);
     });
 
     window.addEventListener('resize', () => {
         adSections.forEach(sec => {
             const container = sec.querySelector('[id^="container-"]');
             if (container) {
-                const el = container.querySelector('iframe, img, div');
+                const el = container.querySelector('iframe, img') || container.firstElementChild;
                 if (el) {
-                    const w = el.offsetWidth || 0;
+                    const w = el.offsetWidth || parseInt(el.getAttribute('width')) || 0;
                     if (w > 40) {
                         const maxAvailable = window.innerWidth - (window.innerWidth < 600 ? 24 : 40);
                         sec.style.maxWidth = `${Math.min(w + 36, maxAvailable)}px`;
