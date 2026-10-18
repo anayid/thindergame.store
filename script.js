@@ -62,7 +62,7 @@ const games = [
     {
         id: 1,
         name: "Mini Soccer Star (MOD, Unlimited Coins/Gems) 1.96",
-        image: "https://play.google.com/pc-store/games/details?id=com.touch2goal.soccer&hl=fr_CH",
+        image: "https://an1.com/uploads/posts/2026-05/1779246657_mini-soccer-star.png",
         linkAndroid: "https://appcomplete.org/cl/i/6njp5m",
         type: "MOD"
     },
