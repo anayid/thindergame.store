@@ -61,27 +61,34 @@ function copyCurrentUrl() {
 const games = [
     {
         id: 1,
+        name: "Mini Soccer Star (MOD, Unlimited Coins/Gems) 1.96",
+        image: "https://play.google.com/pc-store/games/details?id=com.touch2goal.soccer&hl=fr_CH",
+        linkAndroid: "https://appcomplete.org/cl/i/6njp5m",
+        type: "MOD"
+    },
+    {
+        id: 2,
         name: "Mob Control v3.23.4 MOD APK (Unlimited Money)",
         image: "https://www.latestmodapks.com/wp-content/uploads/2023/04/Mob-Control-MOD-APK.jpg",
         linkAndroid: "https://trckapp.org/cl/i/o4ee1d",
         type: "MOD"
     },
     {
-        id: 2,
+        id: 3,
         name: "NBA 2K26 arcade edition",
         image: "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f6/d1/5f/f6d15fad-828c-2c49-d74c-865f10c728b9/NBA2K25_MTM_App-Store-Screenshots_2796x1290_7_EN.jpg/313x144bb.webp",
         linkAndroid: "https://applocked.store/cl/i/l77kdg",
         type: "MOD"
     },
     {
-        id: 3,
+        id: 4,
         name: "GTA San Andreas",
         image: "https://gtandreaspro.com/wp-content/uploads/2024/11/GTA-San-Logo.webp",
         linkAndroid: "https://applocked.store/cl/i/pqqok2",
         type: "MOD"
     },
     {
-        id: 4,
+        id: 5,
         name: "Marvels Spider-Man: Miles Morales APK",
         image: "https://m.media-amazon.com/images/M/MV5BZjhiMTJhZjUtOTZkNC00OGVkLThkNjctODQ4MGYzOWU3NGVkXkEyXkFqcGdeQVRoaXJkUGFydHlJbmdlc3Rpb25Xb3JrZmxvdw@@._V1_QL75_UX500_CR0,0,500,281_.jpg",
         linkAndroid: "https://applocked.store/cl/i/7jjnq9",
