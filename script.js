@@ -62,7 +62,7 @@ const games = [
     {
         id: 6,
         name: "Tank Busters : Combat de chars",
-        image: "https://play.google.com/store/apps/details?id=com.tank.busters",
+        image: "https://www.bluestacks.com/apps/action/tank-you-on-pc.html",
         linkAndroid: "https://apptrck.net/cl/i/1xj96x",
         type: "MOD"
     },
