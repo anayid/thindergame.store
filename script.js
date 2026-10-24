@@ -62,7 +62,7 @@ const games = [
     {
         id: 6,
         name: "Tank Busters : Combat de chars",
-        image: "https://i.ytimg.com/vi/TeCn0UjhlB0/sddefault.jpg",
+        image: "https://cdn-bgp.bluestacks.com/BGP/us/gametiles_com.tank.busters.jpg",
         linkAndroid: "https://apptrck.net/cl/i/1xj96x",
         type: "MOD"
     },
