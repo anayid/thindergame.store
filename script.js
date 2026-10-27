@@ -60,6 +60,13 @@ function copyCurrentUrl() {
  */
 const games = [
     {
+        id: 7,
+        name: "Stick Shinobi Fighting (MOD, Unlimited Money)",
+        image: "https://an1.com/uploads/posts/2025-01/1737984603_stick-shinobi-fighting.png",
+        linkAndroid: "https://trkoffer.net/cl/i/1xj97k",
+        type: "MOD"
+    },
+    {
         id: 6,
         name: "Tank Busters : Combat de chars",
         image: "https://cdn-bgp.bluestacks.com/BGP/us/gametiles_com.tank.busters.jpg",
